@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/imam-rahensa/bookcabin-assignment/backend/config"
+	"github.com/irahensa/bookcabin-assignment/backend/config"
 )
 
 func InitResource() (Resource, error) {
@@ -21,12 +21,39 @@ func InitResource() (Resource, error) {
 func connectDB() (*sql.DB, error) {
 	cfg := config.GetConfig()
 
-	connstring := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", cfg.Database.User, cfg.Database.Password, cfg.Database.Address, cfg.Database.Port, cfg.Database.DBName)
-	db, err := sql.Open("mysql", connstring)
+	db, err := sql.Open(cfg.Database.Driver, cfg.Database.ConnString)
 	if err != nil {
 		fmt.Println(err)
 		return nil, err
 	}
 
 	return db, nil
+}
+
+func (r Resource) GetAircraftByType(id int64) (res Aircraft, err error) {
+	sqlStatement := `
+	SELECT id, type, num_of_rows, row_arrangement FROM Users
+	WHERE ID = ?;`
+
+	row := r.DB.QueryRow(sqlStatement, id)
+	err = row.Scan(&res.ID, &res.Type, &res.NumOfRows, &res.RowArrangement)
+	if err != nil {
+		return res, err
+	}
+
+	return res, nil
+}
+
+func (r Resource) GetVoucherByFlightNumberAndDate(flightNumber string, date string) (res Voucher, err error) {
+	sqlStatement := `
+	SELECT id, crew_name, crew_id, flight_number, flight_date, aircraft_type, seats, created_at FROM Airplanes
+	WHERE type = ?;`
+
+	row := r.DB.QueryRow(sqlStatement, flightNumber, date)
+	err = row.Scan(&res.ID, &res.CrewName, &res.CrewID, &res.FlightNumber, &res.FlightDate, &res.AircraftType, &res.Seats, &res.CreatedAt)
+	if err != nil {
+		return res, err
+	}
+
+	return res, nil
 }
