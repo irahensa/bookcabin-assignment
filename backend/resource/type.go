@@ -22,6 +22,6 @@ type Voucher struct {
 type Aircraft struct {
 	ID             int64  `json:"id"               db:"id"`
 	Type           string `json:"type"             db:"type"`
-	NumOfRows      string `json:"num_of_rows"      db:"num_of_rows"`
+	NumOfRows      int    `json:"num_of_rows"      db:"num_of_rows"`
 	RowArrangement string `json:"row_arrangement"  db:"row_arrangement"`
 }
