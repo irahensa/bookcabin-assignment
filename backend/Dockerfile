@@ -1,4 +1,4 @@
-FROM golang:1.25-rc-bookworm AS builder
+FROM golang:1.24-alpine AS builder
 
 WORKDIR /app
 
@@ -13,4 +13,4 @@ RUN  go build -o main cmd/main.go
 
 EXPOSE 8080
 
-CMD ["./main"]
+CMD ["./main"] 
