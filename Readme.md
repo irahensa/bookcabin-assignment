@@ -26,5 +26,5 @@ npm run dev
 Go to `frontend\` folder
 ```sh
 docker build -t imam-bookcabin-frontend .
-docker run -p 5174:5174 imam-bookcabin-frontend
+docker run -p 5173:5173 imam-bookcabin-frontend
 ```
