@@ -1,10 +1,9 @@
-FROM golang:1.24-alpine AS builder
+FROM golang:1.25-rc-bookworm AS builder
 
 WORKDIR /app
 
 COPY go.mod .
 COPY go.sum .
-COPY vouchers.db .
 
 RUN go mod download
 

@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/irahensa/bookcabin-assignment/backend/config"
-	logger "github.com/irahensa/bookcabin-assignment/backend/lib/log"
+	// logger "github.com/irahensa/bookcabin-assignment/backend/lib/log"
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -67,7 +67,7 @@ func (r Resource) CreateVoucher(ctx context.Context, voucher Voucher) (err error
 
 	_, err = r.DB.Exec(sqlStatement, voucher.CrewName, voucher.CrewID, voucher.FlightNumber, voucher.FlightDate, voucher.AircraftType, voucher.Seats, time.Now())
 	if err != nil {
-		logger.Error(err)
+		// logger.Error(err)
 		return err
 	}
 

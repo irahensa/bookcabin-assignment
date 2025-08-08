@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/irahensa/bookcabin-assignment/backend/lib/customErrors"
-	logger "github.com/irahensa/bookcabin-assignment/backend/lib/log"
+	// logger "github.com/irahensa/bookcabin-assignment/backend/lib/log"
 	"github.com/irahensa/bookcabin-assignment/backend/resource"
 )
 
@@ -20,14 +20,14 @@ func (h *Handler) CheckVoucherHandler(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&param)
 	if err != nil {
-		logger.Error(err)
+		// logger.Error(err)
 		http.Error(w, customErrors.ErrorParsing.Message, customErrors.ErrorParsing.HTTPCode)
 		return
 	}
 
 	res, err := h.Usecase.CheckVoucher(r.Context(), param.FlightNumber, param.Date)
 	if err != nil {
-		logger.Error(err)
+		// logger.Error(err)
 		e := customErrors.Parse(err)
 		http.Error(w, e.Message, e.HTTPCode)
 		return
@@ -37,7 +37,7 @@ func (h *Handler) CheckVoucherHandler(w http.ResponseWriter, r *http.Request) {
 		Exist: res,
 	})
 	if err != nil {
-		logger.Error(err)
+		// logger.Error(err)
 		http.Error(w, customErrors.ErrorParsing.Message, customErrors.ErrorParsing.HTTPCode)
 		return
 	}
@@ -51,7 +51,7 @@ func (h *Handler) GenerateVoucherHandler(w http.ResponseWriter, r *http.Request)
 
 	err := json.NewDecoder(r.Body).Decode(&param)
 	if err != nil {
-		logger.Error(err)
+		// logger.Error(err)
 		http.Error(w, customErrors.ErrorParsing.Message, customErrors.ErrorParsing.HTTPCode)
 		return
 	}
@@ -64,7 +64,7 @@ func (h *Handler) GenerateVoucherHandler(w http.ResponseWriter, r *http.Request)
 		AircraftType: param.AircraftType,
 	})
 	if err != nil {
-		logger.Error(err)
+		// logger.Error(err)
 		e := customErrors.Parse(err)
 		http.Error(w, e.Message, e.HTTPCode)
 		return
@@ -75,7 +75,7 @@ func (h *Handler) GenerateVoucherHandler(w http.ResponseWriter, r *http.Request)
 		Seats:     res,
 	})
 	if err != nil {
-		logger.Error(err)
+		// logger.Error(err)
 		http.Error(w, customErrors.ErrorParsing.Message, customErrors.ErrorParsing.HTTPCode)
 		return
 	}
