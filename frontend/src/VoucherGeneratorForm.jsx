@@ -9,9 +9,6 @@ function VoucherGeneratorForm() {
     const formData = new FormData(e.target);
     const payload = Object.fromEntries(formData);
 
-    console.log(payload);
-
-    console.log("try hit check");
     fetch("http://127.0.0.1:8080/api/check", {
       method: "POST",
       headers: {
@@ -23,7 +20,6 @@ function VoucherGeneratorForm() {
       .then((response) => response.json())
       .then((data) => {
         if (!data.exists) {
-          console.log("not exist");
           fetch("http://127.0.0.1:8080/api/generate", {
             method: "POST",
             headers: {
@@ -33,19 +29,13 @@ function VoucherGeneratorForm() {
             body: JSON.stringify(payload),
           })
             .then((response) => response.json())
-            .then((data) => console.log(data))
+            .then((data) => alert(data.seats))
             .catch((error) => console.error("Error:", error));
         } else {
-          console.log("exist");
+          alert("voucher for this flight already generated");
         }
       })
       .catch((error) => console.error("Error:", error));
-  };
-
-  const logvar = (e) => {
-    e.preventDefault();
-
-    console.log(checkData);
   };
 
   return (

@@ -1,14 +1,18 @@
 package handler
 
-import "github.com/irahensa/bookcabin-assignment/backend/resource"
+import (
+	"context"
+
+	"github.com/irahensa/bookcabin-assignment/backend/resource"
+)
 
 type Handler struct {
 	Usecase IUsecase
 }
 
 type IUsecase interface {
-	CheckVoucher(flightNumber, date string) (isExist bool, err error)
-	GenerateVoucher(param resource.Voucher) (resp []string, err error)
+	CheckVoucher(ctx context.Context, flightNumber, date string) (isExist bool, err error)
+	GenerateVoucher(ctx context.Context, param resource.Voucher) (resp []string, err error)
 }
 
 type CheckVoucherParam struct {

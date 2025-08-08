@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/irahensa/bookcabin-assignment/backend/lib/customErrors"
+	logger "github.com/irahensa/bookcabin-assignment/backend/lib/log"
 	"github.com/irahensa/bookcabin-assignment/backend/resource"
 )
 
@@ -18,13 +20,16 @@ func (h *Handler) CheckVoucherHandler(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&param)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		logger.Error(err)
+		http.Error(w, customErrors.ErrorParsing.Message, customErrors.ErrorParsing.HTTPCode)
 		return
 	}
 
-	res, err := h.Usecase.CheckVoucher(param.FlightNumber, param.Date)
+	res, err := h.Usecase.CheckVoucher(r.Context(), param.FlightNumber, param.Date)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		logger.Error(err)
+		e := customErrors.Parse(err)
+		http.Error(w, e.Message, e.HTTPCode)
 		return
 	}
 
@@ -32,7 +37,8 @@ func (h *Handler) CheckVoucherHandler(w http.ResponseWriter, r *http.Request) {
 		Exist: res,
 	})
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		logger.Error(err)
+		http.Error(w, customErrors.ErrorParsing.Message, customErrors.ErrorParsing.HTTPCode)
 		return
 	}
 
@@ -45,11 +51,12 @@ func (h *Handler) GenerateVoucherHandler(w http.ResponseWriter, r *http.Request)
 
 	err := json.NewDecoder(r.Body).Decode(&param)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		logger.Error(err)
+		http.Error(w, customErrors.ErrorParsing.Message, customErrors.ErrorParsing.HTTPCode)
 		return
 	}
 
-	res, err := h.Usecase.GenerateVoucher(resource.Voucher{
+	res, err := h.Usecase.GenerateVoucher(r.Context(), resource.Voucher{
 		CrewName:     param.CrewName,
 		CrewID:       param.CrewID,
 		FlightNumber: param.FlightNumber,
@@ -57,7 +64,9 @@ func (h *Handler) GenerateVoucherHandler(w http.ResponseWriter, r *http.Request)
 		AircraftType: param.AircraftType,
 	})
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		logger.Error(err)
+		e := customErrors.Parse(err)
+		http.Error(w, e.Message, e.HTTPCode)
 		return
 	}
 
@@ -66,7 +75,8 @@ func (h *Handler) GenerateVoucherHandler(w http.ResponseWriter, r *http.Request)
 		Seats:     res,
 	})
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		logger.Error(err)
+		http.Error(w, customErrors.ErrorParsing.Message, customErrors.ErrorParsing.HTTPCode)
 		return
 	}
 
