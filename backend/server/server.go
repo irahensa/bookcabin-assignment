@@ -22,7 +22,7 @@ func Serve() {
 	serveMux := http.NewServeMux()
 	app.RegisterRoutes(serveMux)
 
-	addr := fmt.Sprintf("%s:%s", "127.0.0.1", config.GetConfig().Server.Port)
+	addr := fmt.Sprintf(":%s", config.GetConfig().Server.Port)
 	fmt.Printf("Listening and serving on %s \n", addr)
 	http.ListenAndServe(addr, serveMux)
 }

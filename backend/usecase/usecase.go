@@ -53,7 +53,7 @@ func (uc UseCase) GenerateVoucher(ctx context.Context, param resource.Voucher) (
 	m := make(map[string]bool)
 	ss := strings.Split(ac.RowArrangement, ",")
 
-	for i := 0; i < 3; i++ {
+	for len(resp) < 3 {
 		row := rand.IntN(ac.NumOfRows) + 1
 		col := rand.IntN(len(ss))
 		seat := fmt.Sprintf("%d%s", row, ss[col])
